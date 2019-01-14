@@ -1,5 +1,5 @@
-# gambercoin-App
-Frontend App for the [gambercoin](https://github.com/ageapps/gambercoin) project. Its a very basic interface developed in `Vue` to launch gossipers, connect to others and see exchanged messages.
+# gambercoin-app
+Frontend App for the [gambercoin](https://github.com/ageapps/gambercoin) project. Its a very basic interface developed in `Vue` to launch nodes, connect to others and see exchanged messages.
 
 ![](./app.gif)
 
