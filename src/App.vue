@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="container-fluid">
-    <h1 class="title">gambercoin UI</h1>
+    <h1 class="title">GamberCoin UI</h1>
     <transition appear name="fade" mode="out-in">
       <div v-if="!started" id="dashboard" class="col-md-8 col-sm-12 container-fluid">
         <PeerForm @create-peer="startPeer"/>
@@ -8,11 +8,14 @@
       <div v-if="started" id="dashboard" class="container-fluid">
         <p>Peer: {{name}}</p>
         <p>Address: {{address}}</p>
+        <p>Miner Hash: {{hash}}</p>
+        <p>Balance: {{balance}}</p>
         <button type="button" class="btn btn-outline-danger" @click="deletePeer" >Delete this Peer</button>
         <div class="row">
           <div class="col-md-6 col-sm-12">
             <NewMessageInput title="Send Message" @new-message="onNewMessage" />
             <NewMessageInput title="Send Private Message" v-bind:peers="hops" isprivate @new-message="onNewMessage" />
+            <NewRequestInput title="Receiver Hash" @new-request="onTransaction" />
             <PeerList v-bind:peers="nodes"  title="Peers connected"/>
             <MessageList v-bind:messages="messages"  title="Messages"/>
           </div>
@@ -62,6 +65,8 @@ export default {
     return {
       name: '',
       address: '0.0.0.0:0000',
+      hash: 'e34r3j343254225n2523k2352335532121',
+      balance: '5',
       started: false,
       messages: [],
       nodes: [],
@@ -96,7 +101,9 @@ export default {
       })      
       this.peers.push(data)
     },
-  
+    onTransaction(data){
+      pp = data
+    },
     onNewMessage(data){
       // console.log("New Message: " + data)
       var url = BACKEND_URL+"/message";

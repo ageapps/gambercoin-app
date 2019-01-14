@@ -3,7 +3,6 @@
       <div class="card-body">
         <div class="input-group mb-3">
           <div class="input-group">
-            <button @click="toggleDropdown" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedHop}}</button>
             <div v-bind:style="{ display: dropdownDisplay }" class="dropdown-menu">
               <a v-for="(peer,key) in peers" :key = "key" class="dropdown-item" @click="selectNode(key)" >
               {{key}}
@@ -12,7 +11,7 @@
           </div>
           <input type="text" class="form-control" :placeholder="title" aria-label="Recipient's username" aria-describedby="button-addon2"  v-model="requestHash">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="File name" aria-label="File name" aria-describedby="button-addon2" v-model="fileName">
+            <input type="number" class="form-control" placeholder="Amount" aria-label="File name" aria-describedby="button-addon2" v-model="fileName">
           </div>
           <button class="btn btn-outline-secondary" @click="sendRequest" type="button" id="button-addon2">Send</button>
         </div>
@@ -45,7 +44,7 @@ export default {
           requestHash: this.requestHash,
           destination: this.destination,
         }
-        this.$emit('new-request', data)
+        this.$emit('transaction', data)
         this.requestHash = ''
         this.fileName = ''
         this.destination = ''
