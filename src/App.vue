@@ -9,7 +9,8 @@
         <p>Peer: {{name}}</p>
         <p>Address: {{address}}</p>
         <p>Miner Hash: {{hash}}</p>
-        <p>Balance: {{balance}}</p>
+        <p>Balance: {{balance}}</p>   
+        <button type="button" class="btn btn-outline-primary" ref="sendButton" @click="getBalance" id="button-addon2">Reload</button>
         <button type="button" class="btn btn-outline-danger" @click="deletePeer" >Delete this Peer</button>
         <div class="row">
           <div class="col-md-6 col-sm-12">
@@ -65,8 +66,8 @@ export default {
     return {
       name: '',
       address: '0.0.0.0:0000',
-      hash: 'e34r3j343254225n2523k2352335532121',
-      balance: '5',
+      hash: 'XXXXXXXXXX',
+      balance: '0',
       started: false,
       messages: [],
       nodes: [],
@@ -102,7 +103,38 @@ export default {
       this.peers.push(data)
     },
     onTransaction(data){
-      pp = data
+      var url = BACKEND_URL+"/transaction";
+      var params = {
+        name: this.name,
+        in: this.hash,
+        out: data.out,
+        amount: data.amount
+      }
+      this.loading = true;
+      axios.post( url, params)
+      .then(()  =>  {
+        this.loading = false;
+      }, (error)  =>  {
+        this.loading = false;
+        this.showAlert(error.message);
+        return
+      })      
+    },
+    getBalance(){
+      var url = BACKEND_URL+"/balance";
+      var params = {
+        name: this.name,
+        hash: this.hash,
+      }
+      axios.get(url, {
+        params:params
+      }).then((response)  =>  {
+        this.balance = response.data;
+      }, (error)  =>  {
+        this.loading = false;
+        this.showAlert(error.message);
+        return
+      })      
     },
     onNewMessage(data){
       // console.log("New Message: " + data)
@@ -162,7 +194,9 @@ export default {
         this.peers = data.peers
         this.name = response.data.name
         this.address = response.data.address
+        this.hash = response.data.hash
         this.started = true
+        this.getBalance();
       }, (error)  =>  {
         this.loading = false;
         this.showAlert(error.message);
